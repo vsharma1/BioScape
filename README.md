@@ -1,3 +1,3 @@
-biospace
+BioScape
 ========
 

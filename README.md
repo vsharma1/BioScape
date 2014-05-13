@@ -12,9 +12,9 @@ Steps Involved to Execute BioScape
 
 4. Type the following instructions on the terminal
 
-ocamlbuild main.byte && ocamlrun ./_build/main.byte test/spaces/test_declarespaces001.spi
+      ocamlbuild main.byte && ocamlrun ./_build/main.byte test/spaces/test_declarespaces001.spi
 
-python visualization/graphics.py test/spaces/test_declarespaces001.spi_pos.csv
+      python visualization/graphics.py test/spaces/test_declarespaces001.spi_pos.csv
 
 5. The output of the BioScape generates 2 csv Files: *.spi.csv and *.spi pos.csv.
 

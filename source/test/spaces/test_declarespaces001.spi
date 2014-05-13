@@ -1,0 +1,18 @@
+directive sample 25.0 1
+directive plot A(); C(); D()
+
+val top_right = <1.0, 2.0, 3.0>
+val bacterialGrowthLayer:space = cuboid(200.0, 200.0, 200.0) @ top_right
+val step = 5.0
+
+val radius = 1000.0
+
+new ionize@1.0,radius : chan
+
+let A() @ bacterialGrowthLayer , step, sphere(10.0) = do
+    ?ionize; D()
+with mov.A()
+and C() @ bacterialGrowthLayer , step, sphere(4.0) = !ionize;  D()
+and D() @ bacterialGrowthLayer , step, sphere(7.0) = ?ionize;  ()
+
+run (29 of A() | 300 of C())

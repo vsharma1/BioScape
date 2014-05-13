@@ -1,0 +1,74 @@
+directive sample 50.0
+(*directive plot BacF(); BacB();MolB();MolF();HIon();DeadBacB();DeadBacF()*)
+directive plot BacF(); BacB();MolB();MolF();DeadBacB();DeadBacF()
+
+val top_right = <1.0, 2.0, 2.0>
+val top_right1 = <1.0, 2.0, 25.0>
+val top_right2 = <1.0, 2.0, 20.0>
+
+
+val bacterialSurfaceLayer:space = cuboid(100.0, 100.0, 19.0) @ top_right
+val bacterialGrowthLayer:space = cuboid(100.0, 100.0, 60.0) @ top_right1
+val bacterialSurfaceLayerBB:space = cuboid(100.0, 100.0, 1.0) @ top_right2
+
+val step = 5.0
+val step1 = 0.0
+val step2 = 5.0
+val step3 = 4.0
+val step4 = 5.0
+val step5 = 0.0
+val step6 = 0.0
+val step7 = 5.0
+
+val radius = 500.0
+val radius1 = 500.0
+val radius2 = 500.0
+
+
+new bind@1.0, radius:chan
+new kill@0.001,radius1:chan
+new release@0.004,radius2:chan
+
+let HIon()@bacterialGrowthLayer , step, sphere(1.0) = (
+do !release;HIon()
+with  mov.HIon()
+)
+
+let BacB() @bacterialSurfaceLayerBB , step1, sphere(3.0)=
+(
+  do delay@0.1; (BacB()|BacB())
+  or delay@0.005; (BacB()|HIon())
+  or ?kill;DeadBacB()
+)
+
+and DeadBacB() @bacterialSurfaceLayerBB , step2, sphere(3.0)= delay@0.1;()
+
+let BacF()@bacterialGrowthLayer , step3, sphere(3.0) =
+(
+   do delay@0.1; (BacF()|BacF())
+   or  !bind;BacB()
+   or delay@0.005; (BacF()|HIon())
+   or ?kill;DeadBacF()
+   with mov.BacF()
+)
+and DeadBacF() @bacterialGrowthLayer , step4, sphere(3.0)= delay@1.0;()
+
+
+let BindSite()@bacterialSurfaceLayer , step5, sphere(1.0) = ?bind; BindSite()(***Surface**)
+
+
+let MolB() @bacterialSurfaceLayer , step6, sphere(1.0)= ?release;MolF()
+
+and MolF()@bacterialGrowthLayer , step7, sphere(1.0) = (
+do !kill;()
+with  mov.MolF()
+)
+
+
+
+
+run 10 of HIon()
+run 500 of MolB()
+run 50 of BacF()
+run 50 of BindSite()
+

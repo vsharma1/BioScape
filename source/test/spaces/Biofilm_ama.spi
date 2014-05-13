@@ -1,5 +1,5 @@
 directive sample 50.0
-(*directive plot BacF(); BacB();MolB();MolF();HIon();DeadBacB();DeadBacF()*)
+(*Bio-triggered Drug Delivery System*)
 directive plot BacF(); BacB();MolB();MolF();DeadBacB();DeadBacF()
 
 val top_right = <1.0, 2.0, 2.0>
